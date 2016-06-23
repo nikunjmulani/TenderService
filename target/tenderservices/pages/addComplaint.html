@@ -1,0 +1,68 @@
+<div class="box-content" align="center">
+
+<div align="right">
+	<button type="button" class="btn btn-primary" ng-click="home()">Home</button>
+	<button type="button" class="btn btn-primary" ng-click="logout()">Logout</button>
+	</div>
+
+<h2 class="form-signin-heading">Complaint</h2>
+ 
+<b>Accounting Year:</b> {{billYear}} &nbsp;&nbsp; <b>Bill Month:</b> {{billMonthName}}  
+<br/><br/>
+
+<div ng-show="submissionSuccess" ><font color="GREEN"><b>{{msg}}</b></font></div>
+<div ng-show="submissionError" ><font color="RED"><b>{{errorMsg}}</b></font></div>
+
+<table width="100%">
+<tr>
+	<td width="150px"><input class="form-control" placeholder="Complaint No" type="text" ng-model="complainCode"></td>
+	<td><input class="form-control" type="text" placeholder="Complaint Description" ng-model="complainDesc" id="complainDescId"></td>
+</tr>
+</table>
+
+<br/>
+<hr/>
+<br/>
+
+<table width="100%">
+<tr>
+	<td><input class="form-control" placeholder="Item Name"  type="text" ng-model="itemName" id="tags"  ng-blur="checkItem()"/></td>
+	<td width="100px"><input class="form-control" placeholder="Quantity" name="qty" type="text" ng-model="itemQuantity" /></td>
+	<td width="200px"><button type="button" class="btn btn-primary" name="btnAddUpdateItem" ng-click="clickAddUpdateItemBtn()" > Add/Update Item </button></td>
+</tr>
+</table>
+
+<br/>
+ <table style="width:98%" class="table table-striped border"> <!--This table is to display the data-->
+	  <thead>
+		  <tr>
+			   <th>Item Name</th>
+			   <th width="100px" align="right">Unit</th>
+			   <th width="100px" align="right">Rate</th>
+			   <th width="100px" align="right">Quantity</th>
+			   <th width="100px" align="right">Amount</th>
+			   <th width="100px">&nbsp;</th>
+			   <th width="100px">&nbsp;</th>
+		  </tr>
+	  </thead>
+	  <tbody>
+		  <tr ng-repeat="item in itemsDataArr | orderBy:'index':true" >
+			   <td>{{item.itemName}}</td>
+			   <td align="right">{{item.unit}}</td>
+			   <td align="right">{{item.rate}}</td>
+			   <td align="right">{{item.itemQuantity}}</td>
+			   <td align="right">{{item.amount}}</td>
+			   <td><button type="button" class="btnEditDelete btn-primary" ng-click="editItem(item,itemsDataArr.indexOf(item))">&#9998; Edit</button></td>
+			   <td><button type="button" class="btnEditDelete btn-primary" ng-click="delItem(itemsDataArr.indexOf(item))" >&#10007; Delete</button></td>
+		  </tr>
+		 
+		  
+	  </tbody>
+ </table>
+
+ 
+ <br/>
+ <button type="button" class="btn btn-primary" name="btnSaveComplainNew" ng-click="clickSaveComplainNewBtn()" >Save & New</button>
+ <button type="button" class="btn btn-primary	" name="btnSaveComplainExit" ng-click="clickSaveComplainExitBtn()" >Save & Exit</button>
+ <button type="button" class="btn btn-primary	" name="btnSaveComplainExit" ng-click="clickComplainExitBtn()" >Exit</button>
+ </div>

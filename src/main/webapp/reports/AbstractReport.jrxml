@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AbstractReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" scriptletClass="net.sf.jasperreports.engine.JRDefaultScriptlet" uuid="7ef815a9-4976-4896-b446-e9adec494367">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="156"/>
+	<parameter name="QUERY" class="java.lang.String">
+		<parameterDescription><![CDATA["SELECT T1.GROUP_CODE, T1.SR_NO, T1.ITEM_DESC, T1.UNIT_IN_WORDS, T1.RATE, THIS_BILL_QTY.QTY AS THIS_BILL_QTY, THIS_BILL_QTY.AMOUNT AS THIS_BILL_AMOUNT, PREV_BILL_QTY.QTY AS PREV_BILL_QTY, PREV_BILL_QTY.AMOUNT AS PREV_BILL_AMOUNT  FROM MST_ITEMS T1 LEFT JOIN ( SELECT T3.ITEM_ID, SUM(QUANTITY) AS QTY, SUM(AMOUNT) AS AMOUNT FROM COMPLAINTS T2, COMPLAINT_ITEMS T3 WHERE T2.COMPLAINT_ID = T3.COMPLAINT_ID AND T2.BILL_YEAR = '"+ $P{REPORT_PARAMETERS_MAP}.get("billYear") +"' AND T2.BILL_MONTH =  '"+$P{REPORT_PARAMETERS_MAP}.get("billMonth") +"' GROUP BY T3.ITEM_ID ) THIS_BILL_QTY ON T1.ITEM_ID = THIS_BILL_QTY.ITEM_ID  LEFT JOIN ( SELECT T3.ITEM_ID, SUM(QUANTITY) AS QTY, SUM(AMOUNT) AS AMOUNT FROM COMPLAINTS T2, COMPLAINT_ITEMS T3 WHERE T2.COMPLAINT_ID = T3.COMPLAINT_ID AND T2.BILL_YEAR = '"+$P{REPORT_PARAMETERS_MAP}.get("billYear") +"'  AND T2.BILL_MONTH != '"+$P{REPORT_PARAMETERS_MAP}.get("billMonth")+"'  GROUP BY T3.ITEM_ID ) PREV_BILL_QTY ON T1.ITEM_ID = PREV_BILL_QTY.ITEM_ID ORDER BY T1.ITEM_ID"]]></parameterDescription>
+		<defaultValueExpression><![CDATA["SELECT T1.GROUP_CODE, T1.SR_NO, T1.ITEM_DESC, T1.UNIT_IN_WORDS, T1.RATE, THIS_BILL_QTY.QTY AS THIS_BILL_QTY, THIS_BILL_QTY.AMOUNT AS THIS_BILL_AMOUNT, PREV_BILL_QTY.QTY AS PREV_BILL_QTY, PREV_BILL_QTY.AMOUNT AS PREV_BILL_AMOUNT  FROM MST_ITEMS T1 LEFT JOIN ( SELECT T3.ITEM_ID, SUM(QUANTITY) AS QTY, SUM(AMOUNT) AS AMOUNT FROM COMPLAINTS T2, COMPLAINT_ITEMS T3 WHERE T2.COMPLAINT_ID = T3.COMPLAINT_ID AND T2.BILL_YEAR = '"+ $P{REPORT_PARAMETERS_MAP}.get("billYear") +"' AND T2.BILL_MONTH =  '"+$P{REPORT_PARAMETERS_MAP}.get("billMonth") +"' GROUP BY T3.ITEM_ID ) THIS_BILL_QTY ON T1.ITEM_ID = THIS_BILL_QTY.ITEM_ID  LEFT JOIN ( SELECT T3.ITEM_ID, SUM(QUANTITY) AS QTY, SUM(AMOUNT) AS AMOUNT FROM COMPLAINTS T2, COMPLAINT_ITEMS T3 WHERE T2.COMPLAINT_ID = T3.COMPLAINT_ID AND T2.BILL_YEAR = '"+$P{REPORT_PARAMETERS_MAP}.get("billYear") +"'  AND T2.BILL_MONTH != '"+$P{REPORT_PARAMETERS_MAP}.get("billMonth")+"'  GROUP BY T3.ITEM_ID ) PREV_BILL_QTY ON T1.ITEM_ID = PREV_BILL_QTY.ITEM_ID ORDER BY T1.ITEM_ID"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[$P!{QUERY}]]>
+	</queryString>
+	<field name="GROUP_CODE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SR_NO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ITEM_DESC" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UNIT_IN_WORDS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RATE" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="THIS_BILL_QTY" class="java.lang.Double"/>
+	<field name="THIS_BILL_AMOUNT" class="java.lang.Double"/>
+	<field name="PREV_BILL_QTY" class="java.lang.Double"/>
+	<field name="PREV_BILL_AMOUNT" class="java.lang.Double"/>
+	<variable name="THIS_BILL_AMOUNT_1" class="java.lang.Double" resetType="Group" resetGroup="GROUP_CODE" calculation="Sum">
+		<variableExpression><![CDATA[$F{THIS_BILL_AMOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="PREV_BILL_AMOUNT_1" class="java.lang.Double" resetType="Group" resetGroup="GROUP_CODE" calculation="Sum">
+		<variableExpression><![CDATA[$F{PREV_BILL_AMOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_GROUP_A" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA["A".equals($F{GROUP_CODE})?$F{THIS_BILL_AMOUNT}:0]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_GROUP_B" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA["B".equals($F{GROUP_CODE})?$F{THIS_BILL_AMOUNT}:0]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_GROUP_C" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA["C".equals($F{GROUP_CODE})?$F{THIS_BILL_AMOUNT}:0]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_AMOUNT" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{THIS_BILL_AMOUNT}]]></variableExpression>
+	</variable>
+	<variable name="IT_TAX" class="java.lang.Double">
+		<variableExpression><![CDATA[java.lang.Math.ceil($V{SUM_AMOUNT} * 0.02)]]></variableExpression>
+	</variable>
+	<variable name="LABOUR_CESS" class="java.lang.Double">
+		<variableExpression><![CDATA[java.lang.Math.ceil($V{SUM_AMOUNT} * 0.01)]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_DEDUCTION" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{IT_TAX} + $V{LABOUR_CESS}]]></variableExpression>
+	</variable>
+	<variable name="NET_DEDUCTION" class="java.lang.Double">
+		<variableExpression><![CDATA[(($V{TOTAL_DEDUCTION} % 1.0) > 0) ? (($V{TOTAL_DEDUCTION} / 1.0)+1.0) :  $V{TOTAL_DEDUCTION}]]></variableExpression>
+	</variable>
+	<group name="GROUP_CODE">
+		<groupExpression><![CDATA[$F{GROUP_CODE}]]></groupExpression>
+		<groupHeader>
+			<band height="56">
+				<textField>
+					<reportElement x="0" y="5" width="801" height="20" uuid="b43f6471-b2bb-486a-bf06-3b17f464135b"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["A".equals($F{GROUP_CODE}) ? "PART  A(ABSTRACT)" :"PART "+$F{GROUP_CODE}+"(ABSTRACT) NAME OF WORK: ARM WORK (Electrical)for the year "+$P{REPORT_PARAMETERS_MAP}.get("billYear")+" at RHGH and Dispensary Ahmedabad"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="25" width="39" height="31" uuid="19868c74-a53a-4810-b77b-0136ecb4db28"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sr. No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="39" y="25" width="346" height="31" uuid="3e9945f8-cbbe-4a15-9e9f-8642848f63e2"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Description of items]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="385" y="25" width="36" height="31" uuid="e2b112ae-3f0f-4d9c-bdb6-423bce2c7428"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unit]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="571" y="25" width="50" height="31" uuid="35d5ce7b-fa5d-4a8b-9e3a-59925dffc949"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Rate]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="421" y="25" width="50" height="31" uuid="035972af-10af-4b8c-9554-f94aac816bbe"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Qty. This Bill]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="681" y="25" width="60" height="31" uuid="4fc4caa2-97ed-4e5f-b41b-06a8aff9f260"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Prev Bill Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="471" y="25" width="50" height="31" uuid="0c297b43-42a5-4282-8210-e5928fdfcbbe"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Qty. Pre. Bill]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="621" y="25" width="60" height="31" uuid="a793e398-9233-4e31-9dfd-8b0613c4c90a"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[This Bill Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="521" y="25" width="50" height="31" uuid="b9333b7d-0ab5-4964-85c9-be68df20ec46"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Qty. Total Bill]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="741" y="25" width="60" height="31" uuid="0371c5fe-d932-4308-b560-72355d48e14b"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Bill Amount]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="25">
+				<textField>
+					<reportElement x="681" y="0" width="60" height="20" uuid="55ab1779-0ebf-4121-9818-7d727330b1c9"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{PREV_BILL_AMOUNT_1} == null? 0:$V{PREV_BILL_AMOUNT_1})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="621" y="0" width="60" height="20" uuid="1fd6216e-a9cc-48f3-b9e1-b970ae7ab829"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{THIS_BILL_AMOUNT_1} == null? 0:$V{THIS_BILL_AMOUNT_1})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="741" y="0" width="60" height="20" uuid="e32213ad-3de2-4875-b720-19459ffe7c12"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{THIS_BILL_AMOUNT_1} == null? 0:$V{THIS_BILL_AMOUNT_1}) + ($V{PREV_BILL_AMOUNT_1} == null? 0:$V{PREV_BILL_AMOUNT_1})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="39" height="20" uuid="8d35f844-4cf3-45b1-b251-6f194b19c1df"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[" "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="39" y="0" width="346" height="20" uuid="785bf454-9125-44b2-93cd-c83bd6d27ee4"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total Amount"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="385" y="0" width="236" height="20" uuid="e0940733-c4b5-4b4d-b623-49324e0b2d4d"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[" "]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="801" height="20" uuid="e969fb67-096b-488d-ac0a-491e9bcdabdf"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["NAME  OF  WORK  :-  Annual  Repair  and  maintenance  (Elect.)  works  for  the  year  "+$P{REPORT_PARAMETERS_MAP}.get("billYear")+" for  the  ESIC  Rajpur  Hirpur  buildings  and  Dispensaries  at  Ahmedabad."]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="39" height="20" uuid="f6dd89bd-cccd-422b-84e1-d3861f054289"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SR_NO} == null?" " :($F{SR_NO}+"")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="39" y="0" width="346" height="20" uuid="061728f5-e17d-48e9-96e9-26d94d1eeb23"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{SR_NO} == null ? "  ": "") +$F{ITEM_DESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="385" y="0" width="36" height="20" uuid="086ef1ee-2260-47e4-9afa-8d15a0381cfe"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UNIT_IN_WORDS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="571" y="0" width="50" height="20" uuid="3b4e6b32-4a51-40a7-81c2-48a73710b565"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="421" y="0" width="50" height="20" uuid="d32caee5-b28b-4b85-96be-5154de9a1753"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{THIS_BILL_QTY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="681" y="0" width="60" height="20" uuid="dd612fc0-792e-4812-828d-46c31ec6da70"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PREV_BILL_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="621" y="0" width="60" height="20" uuid="698c7fc8-8da9-4c1f-abca-f934558d6e73"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{THIS_BILL_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="471" y="0" width="50" height="20" uuid="a53a2020-dc8c-4322-8eeb-f564a5a16f61"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PREV_BILL_QTY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="521" y="0" width="50" height="20" uuid="3048fb83-526d-42be-8595-9a1f9d43f719"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{THIS_BILL_QTY}+$F{PREV_BILL_QTY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="741" y="0" width="60" height="20" uuid="e8005eb4-1052-4907-bf2c-d39126b5ee41"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PREV_BILL_AMOUNT}+$F{THIS_BILL_AMOUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="555">
+			<textField>
+				<reportElement x="0" y="10" width="801" height="20" uuid="13aa31b2-46c7-4183-b5d0-0216a8039a05"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}.get("companyName")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="46" width="801" height="20" uuid="7467fee3-89fa-419e-9b90-f4dd8816df5d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["NAME  OF  WORK  :-  Annual  Repair  and  maintenance  (Elect.)  works  for  the  year  "+$P{REPORT_PARAMETERS_MAP}.get("billYear")+" for  the  ESIC  Rajpur  Hirpur  buildings  and  Dispensaries  at  Ahmedabad."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="81" width="462" height="20" uuid="7c2d2d2c-75a2-42bf-9816-56ae2191015e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["1.	Bill Date:-" + $P{REPORT_PARAMETERS_MAP}.get("billDate") + "  Bill No.:- "+$P{REPORT_PARAMETERS_MAP}.get("billNo")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="104" width="462" height="20" uuid="c1f14469-ea43-4820-afff-abd6bda0cda6"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["2.	Pan No.:-  "+$P{REPORT_PARAMETERS_MAP}.get("panNo")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="127" width="462" height="20" uuid="b0af4bf9-eb4a-4631-b80d-46461d79d4dc"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["3.	Bill of Month:- "+$P{REPORT_PARAMETERS_MAP}.get("billMonth_MMMYY")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="165" width="801" height="20" uuid="6c093557-cee4-47c3-a62d-ef42555aa9df"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SUMMARY OF TOTAL BILL"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="230" width="46" height="20" uuid="96e499aa-8a01-4920-8191-f7c509308968"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[1]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="200" width="46" height="31" uuid="fe3bc034-f212-498d-995d-82c2af85d3f7"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sr. No.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="48" y="230" width="619" height="20" uuid="a4c59216-f6fb-4211-abfe-31337663d869"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PART A"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="200" width="619" height="31" uuid="a2afe34d-548f-432b-a6bb-3477d28e04ef"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PART]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="667" y="200" width="134" height="31" uuid="12c2c71b-612f-4916-84f3-431fdae8b79a"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AMOUNT]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="667" y="230" width="134" height="20" uuid="59caae1a-d601-41d7-9509-9326fd9df23d"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_GROUP_A}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="667" y="249" width="134" height="20" uuid="8c1c952a-8f00-416d-a282-c9d7cd92d0aa"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_GROUP_B}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="48" y="249" width="619" height="20" uuid="41eeb11c-91f2-47ac-90ad-1f0f13fb54d5"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PART B"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="249" width="46" height="20" uuid="2c3a4837-dfca-4a9d-8405-1cceef4cfafd"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[2]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="667" y="268" width="134" height="20" uuid="43defc66-1f47-4b6c-8429-4ba2b3ed6b02"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_GROUP_C}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="268" width="46" height="20" uuid="034c3fa8-aaee-4d52-bdc2-eedfec6ad5d5"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[3]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="48" y="268" width="619" height="20" uuid="0ae79f87-da00-416a-a2d8-c49cb0eb81a3"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PART C"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="328" width="801" height="20" uuid="ca1cdeb9-faa8-4c14-96cd-d87df3bc0684"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Deductions from the Bill"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="364" width="290" height="20" uuid="6f4abf7e-2469-48f5-99b5-d2a49fda2752"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1)	I.T. 2  % on bill amount"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="364" width="36" height="20" uuid="faa7c663-8e82-415d-8695-eab8a0ae50f6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(-)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="364" width="179" height="20" uuid="6c8452bc-fe9f-40cc-8b42-ee58d5ead70c"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs.  " + String.format("%.2f", $V{IT_TAX})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="384" width="179" height="20" uuid="fa219144-1ab7-4852-b1e5-29d8c258c9ec"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs.  " + String.format("%.2f", $V{LABOUR_CESS})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="384" width="34" height="20" uuid="8c4d6f0c-51cd-4536-b629-c3c67c3f0100"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(-)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="384" width="290" height="20" uuid="8f2ff31d-af9f-4daf-ad48-9d9f78325ba5"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2)        Labor cess 1 % on bill amount"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="48" y="287" width="619" height="20" uuid="f4978b99-4ea3-4e70-afe5-4f68ee6489b9"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Amout (Rs)"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="667" y="287" width="134" height="20" uuid="1987698b-c2f2-418b-9def-9e9e75f0336d"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="287" width="46" height="20" uuid="3b3948a6-1e2e-451c-b18e-96da67355571"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="409" width="34" height="20" uuid="689c3541-e541-4414-8d77-14ade9f2b9eb"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="409" width="179" height="20" uuid="7304e718-84b9-4b61-9f64-a37d45c8c0ad"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs.  " + String.format("%.2f", $V{TOTAL_DEDUCTION})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="409" width="290" height="20" uuid="1a70021f-dc9a-4ec6-b53c-4fb0e1200b2c"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Deduction "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="409" width="132" height="20" uuid="18842323-a608-4358-a1d0-3a348fc6e80e"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["        Rs. "+ $V{TOTAL_DEDUCTION}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="669" y="437" width="132" height="1" uuid="1eca1af5-4742-429e-889b-62ca18a18d6c"/>
+			</line>
+			<textField>
+				<reportElement x="670" y="449" width="132" height="20" uuid="2430f81a-8d27-4cf4-847e-180ec6e93e0c"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["        Rs. "+String.format("%.2f", ($V{SUM_AMOUNT} - $V{TOTAL_DEDUCTION}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="449" width="179" height="20" uuid="a19bd2a8-e94a-4860-baa0-8f916efb700d"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Net Payable Amount"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="469" width="179" height="20" uuid="b048182b-a65f-49e8-8879-bad887879716"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Say"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="469" width="132" height="20" uuid="24dc0a93-94c8-449f-8e7e-bb152c4dd8c8"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["        Rs. "+(java.lang.Math.floor($V{SUM_AMOUNT} - $V{TOTAL_DEDUCTION}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="499" width="801" height="20" uuid="ec8d58d2-37e7-491b-b478-7ba8ec19baf4"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+com.tender.utils.EnglishNumberToWords.convert((long)java.lang.Math.floor($V{SUM_AMOUNT} - $V{TOTAL_DEDUCTION}))+" only)"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="372" y="406" width="131" height="1" uuid="b4dfb463-522f-4559-a416-3342663c400d"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,66 @@
+<div class="box-content" align="center">
+
+<div class="box-content" align="right">
+	<button type="button" class="btn btn-primary" ng-click="home()">Home</button>
+	<button type="button" class="btn btn-primary" ng-click="logout()">Logout</button>
+</div>
+<h2 class="form-signin-heading">Bill</h2>
+
+<b>Accounting Year:</b> 
+<select ng-model="billYear" ng-change="showBill()">
+  <option value="2014-2015">2014-2015</option>
+  <option value="2015-2016">2015-2016</option>
+  <option value="2016-2017">2016-2017</option>
+  <option value="2017-2018">2017-2018</option>
+  <option value="2018-2019">2018-2019</option>
+  <option value="2019-2020">2019-2020</option>
+</select>
+
+<B>&nbsp;&nbsp;Month:</B>
+<select ng-model="billMonth" ng-change="showBill()">
+  <option value="3">April</option>
+  <option value="4">May</option>
+  <option value="5">June</option>
+  <option value="6">July</option>
+  <option value="7">August</option>
+  <option value="8">September</option>
+  <option value="9">October</option>
+  <option value="10">November</option>
+  <option value="11">December</option>
+   <option value="0">January</option>
+  <option value="1">February</option>
+  <option value="2">March</option>
+  
+</select>
+<br/>
+<br/>
+<div ng-show="submissionSuccess" ><font color="GREEN"><b>{{msg}}</b></font></div>
+<div ng-show="submissionError" ><font color="RED"><b>{{errorMsg}}</b></font></div>
+
+<table style="width:60%" class="table table-striped border"> <!--This table is to display the data-->
+	  <thead>
+		  <tr>
+			   <th width="200px">Complaint No</th>
+			   <th>Complaint Description</th>
+			   <th>&nbsp;</th>
+			   <th>&nbsp;</th>
+		  </tr>
+	  </thead>
+	  
+	  <tbody>
+	  	<tr ng-repeat="complain in complainList" >
+		  	<td>{{ complain.complainCode }}</td>
+			<td>{{ complain.complainDesc }}</td>
+			<td><button type="button" ng-click="editComplaint(complain, complainList.indexOf(item))" class="btnEditDelete btn-primary">&#9998; Edit</button></td>
+			<td><button type="button" ng-click="delComplaint(complain, complainList.indexOf(complain))" value="Delete" class="btnEditDelete btn-primary">&#10007; Delete</button></td>
+		</tr>
+	  </tbody>
+ </table>
+  
+ <button type="button" class="btn btn-primary" ng-click="addComplaint()">Add New Complaint</button>
+ <button type="button" class="btn btn-primary" ng-click="viewReport('ComplaintBookReport')">View Complaint Book</button>
+ <button type="button" class="btn btn-primary" ng-click="viewReport('MagermentReport')">Magerment Report</button>
+ <button type="button" class="btn btn-primary" ng-click="viewReport('AbstractReport')">Abstract Report</button>
+</div>
+
+<embed ng-src="{{content}}" style="width:200px;height:200px;"></embed>

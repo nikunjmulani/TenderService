@@ -1,0 +1,9 @@
+{ "records":[ {"ComplaintId":"1","Description":"Berlin","Country":"Germany"},
+ {"ComplaintId":"2","Description":"México D.F.","Country":"Mexico"}, 
+{"ComplaintId":"3","Description":"México D.F.","Country":"Mexico"}, 
+{"ComplaintId":"4","Description":"London","Country":"UK"}, 
+{"ComplaintId":"5","Description":"London","Country":"UK"}, 
+{"ComplaintId":"6","Description":"Luleå","Country":"Sweden"}, 
+{"ComplaintId":"7","Description":"Mannheim","Country":"Germany"},
+ {"ComplaintId":"8","Description":"Strasbourg","Country":"France"}, 
+ {"ComplaintId":"9","Description":"Madrid","Country":"Spain"} ] }

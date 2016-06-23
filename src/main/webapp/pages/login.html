@@ -1,0 +1,41 @@
+<form class="form-signin">
+<div class="container">
+<br/>
+<br/>
+<br/>
+
+<div class="col-sm-4" >&nbsp;</div>
+  <div class="col-sm-6" >
+      
+      <div class="col-sm-8">  
+      	<h2 class="form-signin-heading">Please sign in</h2>
+      </div>
+  	  
+  	  <div class="col-sm-8" ng-show="loginFail"><font color="RED"><b>{{errormsg}}</b></font></div>
+	
+      <div class="col-sm-8 ">  
+        <label for="usernameId" class="sr-only">Email address</label>
+        <input type="text" id="usernameId" class="form-control" placeholder="User name" ng-model="username" required autofocus>
+      </div>
+      
+      <div class="col-sm-8"> 
+        <br/>
+      </div>
+     
+      <div class="col-sm-8 ">  
+       <label for="passwordId" class="sr-only">Password</label>
+        <input type="password" id="passwordId" class="form-control" placeholder="Password" ng-model="password" required>
+      </div>
+      
+       <div class="col-sm-8"> 
+        <br/>
+      </div>
+      
+      <div class="col-sm-8 ">  
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="loginButton()">Sign in</button>
+      </div>
+   </div>
+<div class="col-sm-2" >&nbsp;</div>
+</div> <!-- /container -->
+
+</form>
